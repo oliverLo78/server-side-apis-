@@ -20,7 +20,8 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 ## Installation
 
-you can check out the following URL for the preview ....
+you can check out the following URL for a look https://oliverlo78.github.io/server-side-apis-/
+
 
 ## Usage
 
@@ -52,9 +53,8 @@ THEN I am presented with a 5-day forecast that displays the date, an icon repres
 WHEN I click on a city in the search history
 THEN I am again presented with current and future conditions for that city
 
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+here is a preview image ![preview image](./images/06-server-side-apis-homework-demo.png?raw=true "weather tracker")
+
 
 ## Credits
 
