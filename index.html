@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css? rel='stylesheet'>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Server-Side-APIs HW-06</title>
+</head>
+  <body>
+        <header class="header">
+          <h1 class="display-4">Weather Dashboard</h1>
+        </header>
+
+      <div class="weather-area">
+        <!-- search container aside -->
+            <aside class="search-container">
+              <h2 class="city-header">Search for a city:</h2>
+              <input name="city-search" id="city-search" type="text">
+                <button class="srchButton" id="srchBtn" type="submit">Search</button>
+              
+                <hr class="solid">
+            </aside>
+        
+        <!-- current city and temperature large box in the center -->
+        <main class="city-weather">
+        <div class="city-box">
+            <h3 class="city-name date" id="weather-emoji">City Name:</h3>
+        </div>
+
+        <div class="fday-header">
+          <h3>5-Day Forecast:</h3>
+        <div class="fday forecast fdayCard"></div>
+      
+        </div>
+      </main>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/script.js"></script>
+
+  </body>
+</html>
