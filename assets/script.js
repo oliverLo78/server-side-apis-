@@ -5,7 +5,7 @@ var searchHistoryArray = [];
 var rootUrl = "https://api.openweathermap.org";
 
 // api key
-var apiKey = "ddb2db296ec9741f3edaa08b1a8a7ef1";
+var apikey = "ddb2db296ec9741f3edaa08b1a8a7ef1";
 
 // DOM element references
 var input = $('#city-search');
@@ -25,10 +25,13 @@ function renderSearchHistory() {
     // loop through the history array creating a button for each item
     for (var i = 0; i < searchHistoryArray.length; i++) {
         const element = searchHistoryArray[i];
+        
+        var srchBtnEl = $('<button class="srch strdButton"></button>').text(element); 
+        // append to the search history container
+        $('.search').append(srchBtnEl);
+
     }
-      var srchBtnEl = $('<button class="srch strdButton"></button>').text(element); 
-      // append to the search history container
-      $('.search').append(srchBtnEl);
+      
   }
   
   // Function to update history in local storage then updates displayed history.
@@ -145,40 +148,49 @@ function renderSearchHistory() {
   
   // Fetches weather data for given location from the Weather Geolocation
   // endpoint; then, calls functions to display current and forecast weather data.
-  function fetchWeather(location) {
-    // varialbles of longitude, latitude, city name - coming from location
-    let latitude = location[0].lat;
-    let longitude = location[0].lon;
-    let cityNameEl = location[0].name;
+  function fetchWeather(lat,lon) {
+    // variables of longitude, latitude, city name - coming from location
+    // let latitude = location[0].lat;
+    // let longitude = location[0].lon;
+    // let cityNameEl = location[0].name;
     // api url
     
     // fetch, using the api url, .then that returns the response as json, .then that calls renderItems(city, data)
-    fetch(rootUrl+'latitude='+lat+'&longitude='+lon+'&units=imperial&exclude=hourly,minutely,alerts&appid='apikey)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`)
     .then(function (response) {
       return response.json();
-    });
+    })
     .then(function (data) {
-      renderItems(city,data);
-      appendToHistory(city);
+      console.log(data);
+      // renderItems(city,data);
+      // appendToHistory(city);
+      var temp = document.createElement('h2')
+      temp.textContent = 'temp: ' + data.main.temp
+      var humidity = document.createElement('h2')
+      humidity.textContent = 'humidity: ' + data.main.humidity
+
+
+      document.querySelector('.city-box').append(temp, humidity)
     });
   }
   
   function fetchCoords(search) {
     // variable for you api url
-    let locationUrl = 'https://api.openweathermap.org';
+    let geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=';
 
     // fetch with your url, .then that returns the response in json, .then that does 2 things - calls appendToHistory(search), calls fetchWeather(the data)
-    fetch(geoUrl+search+'&limit=1&appid='+apikey)
+    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=5&appid=${apikey}`)
     .then(function (response) {
       return response.json();
     })
     .then(function(data) {
-      if (!data[0]) {
-        ret
-        hideContent();
-    fetchWeather(data);
-    });
-  }
+      console.log(data);
+      
+        // hideContent();
+    fetchWeather(data[0].lat, data[0].lon)
+    
+  });
+}
 
   function hideContent() {
     $('.cardRow').empty();
@@ -186,6 +198,7 @@ function renderSearchHistory() {
   }
   
   function handleSearchFormSubmit(e) {
+    var searchInput = document.querySelector('#city-search');
     // Don't continue if there is nothing in the search form
     console.log('You clicked button.');
     if (!searchInput.value) {
@@ -201,7 +214,8 @@ function renderSearchHistory() {
   function handleSearchHistoryClick(e) {
     // grab whatever city is is they clicked
     e.preventDefault();
-    var search = $(this).text().trim();
+    var searchInput = document.querySelector('#city-search');
+    var search = searchInput.value.trim();
     fetchCoords(search);
 }
   
