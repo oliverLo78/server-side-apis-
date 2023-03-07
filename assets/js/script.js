@@ -1,6 +1,11 @@
 // Global variables
+let lat;
+let lon;
+let search;
+
 // search history as an empty array
 var searchHistoryArray = [];
+
 // weather api root url
 var rootUrl = "https://api.openweathermap.org";
 
@@ -8,7 +13,7 @@ var rootUrl = "https://api.openweathermap.org";
 var apikey = "ddb2db296ec9741f3edaa08b1a8a7ef1";
 
 // DOM element references
-var input = $('#city-search');
+var cityInput = $('#city-name');
 var weather = $('.city-box');
 var forecast = $('.fday-header');
 
@@ -26,7 +31,7 @@ function renderSearchHistory() {
     for (var i = 0; i < searchHistoryArray.length; i++) {
         const element = searchHistoryArray[i];
         
-        var srchBtnEl = $('<button class="srch strdButton"></button>').text(element); 
+        var srchBtnEl = $('<button class="srchButton strdButton"></button>').text(element); 
         // append to the search history container
         $('.search').append(srchBtnEl);
 
@@ -34,23 +39,39 @@ function renderSearchHistory() {
       
   }
   
-  // Function to update history in local storage then updates displayed history.
-  function appendToHistory(search) {
+// Function to update history in local storage then updates displayed history.
+function appendToHistory(search) {
     // push search term into search history array
-    
+    for (let i = 0; i < searchHistoryArray.length; i++) {
+      const history = searchHistory[i];
+      if (history == search) {
+        return;
+      }
+    }
+    // push search term into search history array
+    searchHistoryArray.push(search);
     // set search history array to local storage
-    searchHistoryArray = localStorage.getItem()
+    // searchHistoryArray = localStorage.getItem()
+    localStorage.setItem('cities', JSON.stringify(searchHistoryArray));
+    
     renderSearchHistory();
   }
-  
-  // Function to get search history from local storage
-  function initSearchHistory() {
-     // get search history item from local storage
+
+
+// Function to get search history from local storage
+function initSearchHistory() {
+    // get search history item from local storage
+    // if (localStorage.getItem('cities') !== null) {
+      // searchHistoryArray = JSON.parse(localStorage.getItem(cities));
+      //    }
+      //    else {
+      //       localStorage.setItem('cities', JSON.stringify(searchHistoryArray));
+      //    }
 
     // set search history array equal to what you got from local storage
-    renderSearchHistory();
-  }
-  
+renderSearchHistory();
+}
+
   // Function to display the CURRENT weather data fetched from OpenWeather api.
   function renderCurrentWeather(city, weather) {
     // Store response data from our fetch request in variables
@@ -61,8 +82,8 @@ function renderSearchHistory() {
     var clouds = weather.clouds;
 
     //convert time to date
-    var date = new Date(weather.sunrise*1000)
-    date= date.toLocaleDateString('en-US');
+    var date = new Date(weather.sunrise*1000);
+    date = date.toLocaleDateString('en-US');
     //☀️🌤️⛅☁️
     if (clouds>50) {
         clouds="☁️";
@@ -165,7 +186,7 @@ function renderSearchHistory() {
       // renderItems(city,data);
       // appendToHistory(city);
       var temp = document.createElement('h2')
-      temp.textContent = 'temp: ' + data.main.temp
+      temp.textContent = 'temp: ' + data.main.temp   
       var humidity = document.createElement('h2')
       humidity.textContent = 'humidity: ' + data.main.humidity
 
@@ -175,20 +196,25 @@ function renderSearchHistory() {
   }
   
   function fetchCoords(search) {
+    if (!search) {
+      console.error('Search query is empty');
+      return;
+    }
+
     // variable for you api url
     let geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=';
 
     // fetch with your url, .then that returns the response in json, .then that does 2 things - calls appendToHistory(search), calls fetchWeather(the data)
-    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=5&appid=${apikey}`)
+    // fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=5&appid=${apikey}`)
+    fetch(`${geoUrl}${search}&limit=5&appid=${apikey}`)
     .then(function (response) {
       return response.json();
     })
     .then(function(data) {
       console.log(data);
-      
-        // hideContent();
-    fetchWeather(data[0].lat, data[0].lon)
-    
+      lat = data[0].lat;
+      lon = data[0].lon;
+      fetchWeather(lat, lon);
   });
 }
 
@@ -198,7 +224,7 @@ function renderSearchHistory() {
   }
   
   function handleSearchFormSubmit(e) {
-    var searchInput = document.querySelector('#city-search');
+    var searchInput = document.querySelector('#city-name');
     // Don't continue if there is nothing in the search form
     console.log('You clicked button.');
     if (!searchInput.value) {
@@ -214,7 +240,7 @@ function renderSearchHistory() {
   function handleSearchHistoryClick(e) {
     // grab whatever city is is they clicked
     e.preventDefault();
-    var searchInput = document.querySelector('#city-search');
+    var searchInput = document.querySelector('#city-name');
     var search = searchInput.value.trim();
     fetchCoords(search);
 }
