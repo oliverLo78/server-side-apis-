@@ -13,9 +13,12 @@ var rootUrl = "https://api.openweathermap.org";
 var apikey = "ddb2db296ec9741f3edaa08b1a8a7ef1";
 
 // DOM element references
+var dashboard = $('#dashboard');
+var dashboardContainerEl = $('#dashboard-container');
 var cityInput = $('#city-name');
+var searchBtnEl = $('#search-btn')
 var weather = $('.city-box');
-var forecast = $('.fday-header');
+var forecastHeader = $('.fday-header');
 
 // search form
 // search input
@@ -31,9 +34,9 @@ function renderSearchHistory() {
     for (var i = 0; i < searchHistoryArray.length; i++) {
         const element = searchHistoryArray[i];
         
-        var srchBtnEl = $('<button class="srchButton strdButton"></button>').text(element); 
+        var searchBtnEl = $('<button class="city-name strdButton"></button>').text(element); 
         // append to the search history container
-        $('.search').append(srchBtnEl);
+        $('.city-name').append(searchBtnEl);
 
     }
       
@@ -84,7 +87,7 @@ renderSearchHistory();
     //convert time to date
     var date = new Date(weather.sunrise*1000);
     date = date.toLocaleDateString('en-US');
-    //☀️🌤️⛅☁️
+    // ☀️🌤️⛅☁️
     if (clouds>50) {
         clouds="☁️";
         } else if(clouds>30) {
@@ -185,10 +188,13 @@ renderSearchHistory();
       console.log(data);
       // renderItems(city,data);
       // appendToHistory(city);
+      var cityNameEl = document.createElement('h2');
+      cityNameEl.textContent = 'City: ' + data.main.cityNameEl;
+
       var temp = document.createElement('h2')
-      temp.textContent = 'temp: ' + data.main.temp   
+      temp.textContent = 'Temperature: ' + data.main.temp   
       var humidity = document.createElement('h2')
-      humidity.textContent = 'humidity: ' + data.main.humidity
+      humidity.textContent = 'Humidity: ' + data.main.humidity
 
 
       document.querySelector('.city-box').append(temp, humidity)

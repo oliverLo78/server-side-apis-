@@ -35,7 +35,7 @@ aside {
     display: inherit;
 }
 
-#srchBtn {
+#search-btn {
     width: 20%;
     height: 30px;
     margin-top: 10px;
@@ -56,7 +56,7 @@ hr.solid {
     border-top: 3px solid #bbb;
   }
 
-#srchBtn::after {
+#search-btn::after {
     top: 175px;
     left: 0;
     right: 0;
