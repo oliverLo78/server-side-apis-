@@ -13,12 +13,9 @@ var rootUrl = "https://api.openweathermap.org";
 var apikey = "ddb2db296ec9741f3edaa08b1a8a7ef1";
 
 // DOM element references
-var dashboard = $('#dashboard');
-var dashboardContainerEl = $('#dashboard-container');
-var cityInput = $('#city-name');
+var cityNameEl = $('#city-name');
 var searchBtnEl = $('#search-btn')
-var weather = $('.city-box');
-var forecastHeader = $('.fday-header');
+var cityBoxEl = document.getElementById('city-box')
 
 // search form
 // search input
@@ -36,8 +33,7 @@ function renderSearchHistory() {
         
         var searchBtnEl = $('<button class="city-name strdButton"></button>').text(element); 
         // append to the search history container
-        $('.city-name').append(searchBtnEl);
-
+        $('#city-name').append(searchBtnEl);
     }
       
   }
@@ -87,6 +83,7 @@ renderSearchHistory();
     //convert time to date
     var date = new Date(weather.sunrise*1000);
     date = date.toLocaleDateString('en-US');
+
     // ☀️🌤️⛅☁️
     if (clouds>50) {
         clouds="☁️";
@@ -107,7 +104,7 @@ renderSearchHistory();
     // append those elements somewhere
     $('.city-box').append(cityDateEl, tempEl, windEl, humidityEl);    
     // give them their appropriate content
-  
+   
   }
   
   // Function to display a FORECAST card given an object (from our renderForecast function) from open weather api
@@ -122,9 +119,9 @@ renderSearchHistory();
 
     // Create elements for a card
     var dateEl = $('<h4></h4').text(date);
-    var cloudsEl = $('<div></div>').text(clouds);
+    var cloudsEl = $('<div></div>').textContent(clouds);
     var tempEl = $('<div></div>').text('Temp: '+wind+ '°F');
-    var windEl = $('<div></div').text('Wind: '+wind+'MPH');
+    var windEl = $('<div></div').text('Wind: '+wind+ 'MPH');
     var humidityEl = $('<div></div>').text('Humidity: '+humidity+'%');
 
     // Add content to elements
@@ -188,27 +185,22 @@ renderSearchHistory();
       console.log(data);
       // renderItems(city,data);
       // appendToHistory(city);
-      var cityNameEl = document.createElement('h2');
-      cityNameEl.textContent = 'City: ' + data.main.cityNameEl;
-
       var temp = document.createElement('h2')
       temp.textContent = 'Temperature: ' + data.main.temp   
       var humidity = document.createElement('h2')
       humidity.textContent = 'Humidity: ' + data.main.humidity
 
-
-      document.querySelector('.city-box').append(temp, humidity)
+      document.querySelector('#city-box').append(temp, humidity)
     });
   }
   
   function fetchCoords(search) {
     if (!search) {
-      console.error('Search query is empty');
       return;
     }
 
     // variable for you api url
-    let geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=';
+    var geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=';
 
     // fetch with your url, .then that returns the response in json, .then that does 2 things - calls appendToHistory(search), calls fetchWeather(the data)
     // fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=5&appid=${apikey}`)
@@ -218,6 +210,11 @@ renderSearchHistory();
     })
     .then(function(data) {
       console.log(data);
+      for (var i = 0; i < data.length; i++) {
+        var cityName = document.createElement('h3');
+        cityName = textContent = data[i].name;
+        cityBoxEl.append(cityName);
+      }
       lat = data[0].lat;
       lon = data[0].lon;
       fetchWeather(lat, lon);
