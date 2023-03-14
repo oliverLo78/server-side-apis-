@@ -17,12 +17,6 @@ var cityNameEl = $('#city-name');
 var searchBtnEl = $('#search-btn')
 var cityBoxEl = document.getElementById('city-box')
 
-// search form
-// search input
-// container/section for today's weather
-// container/section for the forecast 
-// search history container
-
 // Function to display the search history list.
 function renderSearchHistory() {
     // empty the search history container
@@ -76,7 +70,7 @@ renderSearchHistory();
     // Store response data from our fetch request in variables
     // temperature, wind speed, etc.
     var temp = weather.temp;
-    var wind = weather.windSpeed;
+    var wind = weather.wind;
     var humidity = weather.humidity;
     var clouds = weather.clouds;
 
@@ -113,14 +107,14 @@ renderSearchHistory();
     // variables for data from api
     // temp, windspeed, etc.
     var temp = forecast.temp.day;
-    var wind = forecast.windSpeed;
+    var wind = forecast.wind;
     var humidity = forecast.humidity;
     var clouds = forecast.clouds;
 
     // Create elements for a card
     var dateEl = $('<h4></h4').text(date);
     var cloudsEl = $('<div></div>').textContent(clouds);
-    var tempEl = $('<div></div>').text('Temp: '+wind+ '°F');
+    var tempEl = $('<div></div>').text('Temp: '+temp+ '°F');
     var windEl = $('<div></div').text('Wind: '+wind+ 'MPH');
     var humidityEl = $('<div></div>').text('Humidity: '+humidity+'%');
 
@@ -170,12 +164,7 @@ renderSearchHistory();
   // Fetches weather data for given location from the Weather Geolocation
   // endpoint; then, calls functions to display current and forecast weather data.
   function fetchWeather(lat,lon) {
-    // variables of longitude, latitude, city name - coming from location
-    // let latitude = location[0].lat;
-    // let longitude = location[0].lon;
-    // let cityNameEl = location[0].name;
-    // api url
-    
+    // variables of longitude, latitude, city name - coming from location    
     // fetch, using the api url, .then that returns the response as json, .then that calls renderItems(city, data)
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`)
     .then(function (response) {
@@ -186,11 +175,15 @@ renderSearchHistory();
       // renderItems(city,data);
       // appendToHistory(city);
       var temp = document.createElement('h2')
-      temp.textContent = 'Temperature: ' + data.main.temp   
+      temp.textContent = 'Temperature: ' + data.main.temp 
+
+      var wind = document.createElement('h2')
+      wind.textContent = 'Wind: ' + data.wind.speed
+
       var humidity = document.createElement('h2')
       humidity.textContent = 'Humidity: ' + data.main.humidity
 
-      document.querySelector('#city-box').append(temp, humidity)
+      document.querySelector('#city-box').append(temp, wind, humidity)
     });
   }
   
@@ -221,10 +214,10 @@ renderSearchHistory();
   });
 }
 
-  function hideContent() {
-    $('.cardRow').empty();
-    $('.city-box').empty();
-  }
+  // function hideContent() {
+  //   $('.cardRow').empty();
+  //   $('.city-box').empty();
+  // }
   
   function handleSearchFormSubmit(e) {
     var searchInput = document.querySelector('#city-name');
