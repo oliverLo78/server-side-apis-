@@ -7,7 +7,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-
+    <!-- moment to display the date-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
     <link rel="stylesheet" href="./assets/css/style.css">
     <title>Server-Side-APIs Weather Dashboard</title>
@@ -16,6 +17,9 @@
         <header class="header">
           <div class="container text-center">
           <h1 class="display-4">Weather Dashboard</h1>
+          <h2 class="lead">Search for a city to get the current weather</h2>
+          <!-- display today's date and time-->
+          <p id="currentDay" class="lead"></p>
         </header>
 
       <div class="weather-area">
@@ -23,7 +27,7 @@
             <aside class="search-container">
               <h2 class="city-header">Search for a city:</h2>
               <input name="city-name" id="city-name" type="text">
-                <button class="search-btn" id="search-btn">Search</button>
+                <button class="btn btn-block custom-btn" id="search-btn">Search</button>
                 <hr class="solid">
             </aside>
         

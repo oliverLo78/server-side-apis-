@@ -6,16 +6,20 @@ let search;
 // search history as an empty array
 var searchHistoryArray = [];
 
+// show the date and time
+var today = moment().format('MMMM Do YYYY, h:mm:ss a');
+$('#currentDay').text(today);
+
 // weather api root url
 var rootUrl = "https://api.openweathermap.org";
 
 // api key
-var apikey = "ddb2db296ec9741f3edaa08b1a8a7ef1";
+var apikey = "c8b076f9b5907107d146b0c7b6c59d90";
 
 // DOM element references
 var cityNameEl = $('#city-name');
-var searchBtnEl = $('#search-btn')
-var cityBoxEl = document.getElementById('city-box')
+var searchBtnEl = $('#search-btn');
+var cityBoxEl = document.getElementById('city-box');
 
 // Function to display the search history list.
 function renderSearchHistory() {
@@ -90,7 +94,7 @@ renderSearchHistory();
         }
   
     // document.create the elements you'll want to put this information in  
-    var cityDateEl = $('<h3></h3>').text(city+' ('+date+') '+clouds);
+    var cityDateEl = $('<h3></h3>').text('City: '+city+' ('+date+') '+clouds);
     var tempEl = $('<div></div>').text('Temp: '+temp+'°F');
     var windEl = $('<div></div>').text('Wind: '+wind+' MPH');
     var humidityEl = $('<div></div>').text('Humidity: '+humidity+'%');
@@ -172,8 +176,10 @@ renderSearchHistory();
     })
     .then(function (data) {
       console.log(data);
-      // renderItems(city,data);
       // appendToHistory(city);
+      var name = document.createElement('h2')
+      name.textContent = 'City: ' + data.name
+      
       var temp = document.createElement('h2')
       temp.textContent = 'Temperature: ' + data.main.temp 
 
@@ -183,7 +189,7 @@ renderSearchHistory();
       var humidity = document.createElement('h2')
       humidity.textContent = 'Humidity: ' + data.main.humidity
 
-      document.querySelector('#city-box').append(temp, wind, humidity)
+      document.querySelector('#city-box').append(name, temp, wind, humidity)
     });
   }
   
@@ -205,7 +211,7 @@ renderSearchHistory();
       console.log(data);
       for (var i = 0; i < data.length; i++) {
         var cityName = document.createElement('h3');
-        cityName = textContent = data[i].name;
+        cityName = textContent = data[i].name.state;
         cityBoxEl.append(cityName);
       }
       lat = data[0].lat;
