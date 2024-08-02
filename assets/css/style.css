@@ -100,13 +100,10 @@ hr.solid {
 }
 
 .card {
-    width: 100px;
-    height: 200px;
     background-color: #4D8CD6;
     color: white;
-    margin: 1%;
-    max-width: 100%;
-    
+    margin: 0 0 20px 0;
+    border-radius: var(--border-radius);
 }
 
 .card > * {

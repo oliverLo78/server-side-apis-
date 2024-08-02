@@ -20,39 +20,64 @@ var apikey = "c8b076f9b5907107d146b0c7b6c59d90";
 var cityNameEl = $('#city-name');
 var searchBtnEl = $('#search-btn');
 var cityBoxEl = document.getElementById('city-box');
+var buttonContainer = document.getElementById('button-container');
+var fetchButton = document.getElementById('fetch-button');
 
-// Function to display the search history list.
+// Function to add a button below the search button and create a search history cities list of buttons.
 function renderSearchHistory() {
-    // empty the search history container
-    $('.strdButton').remove();
-    // loop through the history array creating a button for each item
-    for (var i = 0; i < searchHistoryArray.length; i++) {
-        const element = searchHistoryArray[i];
-        
-        var searchBtnEl = $('<button class="city-name strdButton"></button>').text(element); 
-        // append to the search history container
-        $('#city-name').append(searchBtnEl);
-    }
-      
-  }
-  
-// Function to update history in local storage then updates displayed history.
-function appendToHistory(search) {
-    // push search term into search history array
-    for (let i = 0; i < searchHistoryArray.length; i++) {
-      const history = searchHistory[i];
-      if (history == search) {
-        return;
-      }
-    }
-    // push search term into search history array
-    searchHistoryArray.push(search);
-    // set search history array to local storage
-    // searchHistoryArray = localStorage.getItem()
-    localStorage.setItem('cities', JSON.stringify(searchHistoryArray));
+  var apiURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + search + '&appid=' + apikey;
     
-    renderSearchHistory();
-  }
+  fetch(apiURL).then(function(response) {
+    if (response.ok) {
+      response.json().then(function(data) {
+        displayWeatherCitiesBtn(data, search);
+      });
+    }
+  });
+}
+
+var displayWeatherCitiesBtn = function(data, search) {
+  // create a button for the city
+  var cityBtn = document.createElement('button');
+  cityBtn.textContent = search;
+  cityBtn.classList.add('btn', 'btn-secondary', 'btn-lg', 'btn-block', 'city-btn');
+  cityBtn.setAttribute('type', 'button');
+  cityBtn.setAttribute('data-city', search);
+  buttonContainer.append(cityBtn);
+};
+  // empty the search history container
+    $('#city-name').empty();
+    // get the search history array from local storage
+    searchHistoryArray = JSON.parse(localStorage.getItem('cities'));
+    // if the search history array is null, set it to an empty array
+    if (searchHistoryArray === null) {
+      searchHistoryArray = [];
+    }
+    // loop through the history array creating a button for each item
+    for (var i = 0; i < searchHistoryArray.length; i++) {  
+      var cityBtn = document.createElement('button');
+      city.textContent = searchHistoryArray[i].city;
+      buttonContainer.append(cityBtn);      
+    }
+  
+
+// Function to update history in local storage then updates displayed history.
+// function appendToHistory(search) {
+    // push search term into search history array
+    // for (let i = 0; i < searchHistoryArray.length; i++) {
+    //   const history = searchHistory[i];
+    //   if (history == search) {
+    //     return;
+    //   }
+    // }
+    // push search term into search history array
+  //   searchHistoryArray.push(search);
+  //   // set search history array to local storage
+  //   // searchHistoryArray = localStorage.getItem()
+  //   localStorage.setItem('cities', JSON.stringify(searchHistoryArray));
+    
+  //   renderSearchHistory();
+  // }
 
 
 // Function to get search history from local storage
@@ -137,7 +162,7 @@ renderSearchHistory();
       clouds = '☀️';
     }
     
-    var cardEl = $("<div class=' card'</div>")
+    var cardEl = $("<div class='card'</div>")
 
     // append
     $('.cardRow').append(cardEl);
@@ -253,3 +278,5 @@ renderSearchHistory();
 
   // click event to run the handleSearchHistoryClick
   $(document).on('click', handleSearchHistoryClick);
+
+ 
