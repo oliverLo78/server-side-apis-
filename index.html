@@ -1,55 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <!-- moment to display the date-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
     <link rel="stylesheet" href="./assets/css/style.css">
     <title>Server-Side-APIs Weather Dashboard</title>
 </head>
-  <body>
-        <header class="header">
-          <div class="container text-center">
-            <h1 class="display-4">
-              <i class="fa-solid fa-sun"></i>Weather Dashboard!
-            </h1>
-              <p>Search for a city to get the current weather</p>
-               <!-- display today's date and time-->
-              <p id="currentDay" class="lead"></p>
-        </header>
 
+<body>
+  <header class="header">
+    <div class="container text-center">
+      <h1 class="display-4">
+        <i class="fa-solid fa-sun"></i>Weather Dashboard!
+      </h1>
+        <p>Search for a city to get the current weather</p>
+         <!-- display today's date and time-->
+        <p id="currentDay" class="lead"></p>
+  </header>
+      
 
-      <main class="flex-row justify-space-between">
+    <main class="flex-row justify-space-between">
       <div class="col-12 col-md-4">
-        <!-- search container aside -->
+        <!-- search container card-->
             <div class="card">
               <h2 class="card-header text-uppercase">Search by city</h2>
-              <form action="city-form" class="card-body"></form>
-              <label for="city-name">City Name:</label>
-              <input name="city-name" id="city-name" type="text" autofocus="true" class="form-input"/>
-                <button type="submit" class="btn" id="search-btn">Get weather</button>
-                <hr class="solid">
-            </div>
+              <form>
+                <div class="input-group">
+                  <input type="text" name="city-name" id="city-name" placeholder="city" autofocus="true"/>
+                  <button id="submit">Submit</button>
+                  <hr class="solid">
+                </div>
+                 <!-- search history cities buttons dynamically rendered-->
+                 <div id="city-buttons"></div>
+              </form>      
+       
+      </div>
         
-        <!-- current city and temperature large box in the center -->
-        <div id="city-box">
-            <h3 class="city-name date" id="weather-emoji"></h3>
-        </div>
-
+      <!-- current city and temperature 5-day forecast cards with emojis and weather info-->
+      <div id="col-12 col-md-8">
+          <h2 class="city-name">Showing Weather for: <span id="city-forecast"></span></h2>
+          <div id="city-container" class=""></div>
+      </div>
 
       </main>
-    </div>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://kit.fontawesome.com/7c84e92252.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/7c84e92252.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./assets//js/script.js"></script>
-
   </body>
 </html>
